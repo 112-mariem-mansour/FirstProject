@@ -7,11 +7,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function Authentification({navigation}) {
   const [email,setmail]=useState("admin") ;
   const [password,setpassword]=useState("admin") ;
+  const [password2,setpassword2]=useState("admin") ;
+
   const refinput2=useRef();
   
   return (
     <ImageBackground source={require('../assets/image2.png')} style={styles.container}>
-      <Text style={styles.headerText}>Authentification</Text>
+      <Text style={styles.headerText}>Create User</Text>
       <TextInput
             style={styles.inputBox}
             onChangeText={(text)=>{setmail(text)}}
@@ -29,16 +31,21 @@ export default function Authentification({navigation}) {
             secureTextEntry={true}
             
           />
+           <TextInput
+            ref={refinput3}
+            onChangeText={(text)=>{setpassword2(text)}}
+            style={styles.inputBox}
+            placeholder={'Confirme password'}
+            keyboardType={'default'}
+            secureTextEntry={true}
+            
+          />
                    <Button
                 onPress={() => {
-                  if((email==="admin") &&(password==="admin")){
-                    navigation.navigate("Accueil");
-                  }else{
-                    alert("error")
-                  }
-                }}>Sign in</Button>
+                    navigation.navigate("Authentification");
+                }}>Create</Button>
                 <TouchableOpacity style={{paddingRight:10 ,width:"100%",alignItems:"flex-end",}}><
-                  Text  onPress={()=>{navigation.navigate("CreateUser");}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>
+                  Text  onPress={()=>{alert("create")}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>
                 </TouchableOpacity>
       <StatusBar style="auto" />
     </ImageBackground>
