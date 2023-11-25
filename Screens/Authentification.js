@@ -2,10 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import { ImageBackground, StyleSheet, Text, View ,TextInput,TouchableOpacity} from 'react-native';
 import Button from "../components/Button";
 import { useRef, useState } from 'react';
-export default function Authentification() {
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+export default function Authentification({navigation}) {
   const [email,setmail]=useState("admin") ;
   const [password,setpassword]=useState("admin") ;
   const refinput2=useRef();
+  
   return (
     <ImageBackground source={require('../assets/image2.png')} style={styles.container}>
       <Text style={styles.headerText}>Authentification</Text>
@@ -29,7 +32,7 @@ export default function Authentification() {
                    <Button
                 onPress={() => {
                   if((email==="admin") &&(password==="admin")){
-                    alert("c bn")
+                    navigation.navigate("Accueil");
                   }else{
                     alert("error")
                   }
