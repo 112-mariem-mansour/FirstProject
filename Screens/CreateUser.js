@@ -4,7 +4,9 @@ import Button from "../components/Button";
 import { useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-export default function Authentification({navigation}) {
+import firebase from "../Config";
+const auth=firebase.auth();
+export default function CreateUser({navigation}) {
   const [email,setmail]=useState("admin") ;
   const [refinput2,setpassword]=useState("admin") ;
   const [refinput3,setpassword2]=useState("admin") ;
@@ -43,8 +45,15 @@ export default function Authentification({navigation}) {
           />
                    <Button
                 onPress={() => {
-                    navigation.navigate("Authentification");
+                    if(refinput2===refinput3){
+                        auth.createUseWithEmailAndPassword(email,refinput2).then(()=>{navigation.navigate("Accueil");})
+                        .catch((err)=>alert(err))
+                    }else{alert("password invalide ");}
                 }}>Create</Button>
+                 <Button
+                onPress={() => {
+                    navigation.goBack() ;
+                }}>Annuler</Button>
                 <TouchableOpacity style={{paddingRight:10 ,width:"100%",alignItems:"flex-end",}}><
                   Text  onPress={()=>{alert("create")}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>
                 </TouchableOpacity>
