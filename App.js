@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer initialRouteName="Accueil">
+    <NavigationContainer initialRouteName="Authentification">
       <Stack.Navigator>
         <Stack.Screen name="Authentification" component={Authentification} />
         <Stack.Screen name="CreateUser" component={CreateUser} />

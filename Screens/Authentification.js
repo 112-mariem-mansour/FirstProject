@@ -19,9 +19,10 @@ export default function Authentification({navigation}) {
             placeholder={'Login'}
             keyboardType={'default'}
             blurOnSubmit={false}
+            value={email}
           />
           <TextInput
-            ref={refinput2}
+            value={refinput2}
             onChangeText={(text)=>{setpassword(text)}}
             style={styles.inputBox}
             placeholder={'password'}

@@ -6,10 +6,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 export default function Authentification({navigation}) {
   const [email,setmail]=useState("admin") ;
-  const [password,setpassword]=useState("admin") ;
-  const [password2,setpassword2]=useState("admin") ;
+  const [refinput2,setpassword]=useState("admin") ;
+  const [refinput3,setpassword2]=useState("admin") ;
 
-  const refinput2=useRef();
   
   return (
     <ImageBackground source={require('../assets/image2.png')} style={styles.container}>
@@ -21,9 +20,11 @@ export default function Authentification({navigation}) {
             placeholder={'Login'}
             keyboardType={'default'}
             blurOnSubmit={false}
+            value={email}
+
           />
           <TextInput
-            ref={refinput2}
+            value={refinput2}
             onChangeText={(text)=>{setpassword(text)}}
             style={styles.inputBox}
             placeholder={'password'}
@@ -32,7 +33,7 @@ export default function Authentification({navigation}) {
             
           />
            <TextInput
-            ref={refinput3}
+            value={refinput3}
             onChangeText={(text)=>{setpassword2(text)}}
             style={styles.inputBox}
             placeholder={'Confirme password'}
