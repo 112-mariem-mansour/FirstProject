@@ -4,7 +4,7 @@ import { MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vecto
 import ListProfil from './HomeScreen/ListProfil';
 import Groupe from './HomeScreen/Groupe';
 import MyAccount from './HomeScreen/MyAccount';
-import Chat from './HomeScreen/chat';
+import chat from './HomeScreen/chat';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -56,8 +56,8 @@ export default function Accueil(props) {
         }}
       />
       <Tab.Screen
-        name="Chat"
-        component={Chat}
+        name="chat"
+        component={chat}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="chat" size={24} color={color} />
