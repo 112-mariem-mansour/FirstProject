@@ -4,10 +4,12 @@ import Button from "../components/Button";
 import { useRef, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import firebase from '../Config';
 export default function Authentification({navigation}) {
-  const [email,setmail]=useState("admin") ;
-  const [password,setpassword]=useState("admin") ;
+  const [email,setmail]=useState("") ;
+  const [password,setpassword]=useState("") ;
   const refinput2=useRef();
+  const auth=firebase.auth() ;
   
   return (
     <ImageBackground source={require('../assets/image2.png')} style={styles.container}>
@@ -22,7 +24,7 @@ export default function Authentification({navigation}) {
             value={email}
           />
           <TextInput
-            value={refinput2}
+            value={password}
             onChangeText={(text)=>{setpassword(text)}}
             style={styles.inputBox}
             placeholder={'password'}
@@ -32,11 +34,11 @@ export default function Authentification({navigation}) {
           />
                    <Button
                 onPress={() => {
-                  if((email==="admin") &&(password==="admin")){
-                    navigation.navigate("Accueil");
-                  }else{
-                    alert("error")
-                  }
+                  auth.signInWithEmailAndPassword(email,password)
+                  .then(()=>{const currentid=auth.currentUser.uid;
+                    navigation.navigate("Accueil",{currentid})}).catch((err)=>{alert(err);})      
+                  
+
                 }}>Sign in</Button>
                 <TouchableOpacity style={{paddingRight:10 ,width:"100%",alignItems:"flex-end",}}><
                   Text  onPress={()=>{navigation.navigate("CreateUser");}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>

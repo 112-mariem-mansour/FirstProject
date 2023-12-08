@@ -46,7 +46,8 @@ export default function CreateUser({navigation}) {
                    <Button
                 onPress={() => {
                     if(refinput2===refinput3){
-                        auth.createUseWithEmailAndPassword(email,refinput2).then(()=>{navigation.navigate("Accueil");})
+                        auth.createUserWithEmailAndPassword(email,refinput2).then(()=>{
+                          navigation.navigate("Accueil");})
                         .catch((err)=>alert(err))
                     }else{alert("password invalide ");}
                 }}>Create</Button>
@@ -54,8 +55,7 @@ export default function CreateUser({navigation}) {
                 onPress={() => {
                     navigation.goBack() ;
                 }}>Annuler</Button>
-                <TouchableOpacity style={{paddingRight:10 ,width:"100%",alignItems:"flex-end",}}><
-                  Text  onPress={()=>{alert("create")}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>
+                <TouchableOpacity style={{paddingRight:10 ,width:"100%",alignItems:"flex-end",}}><Text  onPress={()=>{alert("create")}} style={{fontWeight:"bold", color : "white"}}>Create new user</Text>
                 </TouchableOpacity>
       <StatusBar style="auto" />
     </ImageBackground>

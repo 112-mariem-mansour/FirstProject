@@ -1,0 +1,131 @@
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TextInput, Button, StyleSheet } from 'react-native';
+import firebase from '../../Config';
+
+const database = firebase.database();
+
+const Chat = ({ route }) => {
+    const { profile } = route.params;
+    const [messages, setMessages] = useState([]);
+    const [newMessage, setNewMessage] = useState('');
+  
+    useEffect(() => {
+      const chatRoomId = createChatRoomId(profile.id);
+  
+      const messagesRef = database.ref(`chats/${chatRoomId}/messages`);
+  
+      messagesRef.on('value', (snapshot) => {
+        const messagesData = snapshot.val();
+        if (messagesData) {
+          const messagesArray = Object.values(messagesData);
+          setMessages(messagesArray);
+        }
+      });
+  
+      return () => messagesRef.off('value');
+    }, [profile]);
+  
+    const handleSend = () => {
+      const userId = firebase.auth().currentUser.uid;
+  
+      // Check if the recipient is the same as the current user
+      if (userId === profile.id) {
+        // Don't send messages to oneself
+        return;
+      }
+  
+      const chatRoomId = createChatRoomId(profile.id);
+      const newMessageRef = database.ref(`chats/${chatRoomId}/messages`).push();
+  
+      newMessageRef.set({
+        text: newMessage,
+        timestamp: Date.now(),
+        from: userId, // Add sender information
+      });
+  
+      setNewMessage('');
+    };
+  
+    const createChatRoomId = (otherUserId) => {
+      const userId = firebase.auth().currentUser.uid;
+      return userId < otherUserId
+        ? `${userId}_${otherUserId}`
+        : `${otherUserId}_${userId}`;
+    };
+  
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.timestamp.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={
+                item.from === firebase.auth().currentUser.uid
+                  ? styles.myMessage
+                  : styles.otherMessage
+              }
+            >
+              <Text
+                style={{
+                  color:
+                    item.from === firebase.auth().currentUser.uid
+                      ? 'white' // Text color for sender's messages
+                      : 'black', // Text color for receiver's messages
+                }}
+              >
+                {item.text}
+              </Text>
+            </View>
+          )}
+        />
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={newMessage}
+            onChangeText={setNewMessage}
+            placeholder="Type your message..."
+          />
+          <Button onPress={handleSend} title="Send" />
+        </View>
+      </View>
+    );
+  };
+  
+  
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    myMessage: {
+      alignSelf: 'flex-end',
+      backgroundColor: '#0084FF', // Blue for sender
+      borderRadius: 20,
+      padding: 12,
+      marginVertical: 8,
+      maxWidth: '70%',
+    },
+    otherMessage: {
+      alignSelf: 'flex-start',
+      backgroundColor: '#CCCCCC', // Gray for receiver
+      borderRadius: 20,
+      padding: 12,
+      marginVertical: 8,
+      maxWidth: '70%',
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      marginTop: 8,
+    },
+    input: {
+      flex: 1,
+      marginRight: 8,
+      padding: 8,
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 4,
+    },
+  });
+  
+  export default Chat;
