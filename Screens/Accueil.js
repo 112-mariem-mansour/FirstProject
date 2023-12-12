@@ -12,25 +12,27 @@ export default function Accueil(props) {
   const currentid = props.route.params.currentid;
 
   const tabBarOptions = {
-    activeTintColor: '#FFFFFF', // Active tab text color
-    inactiveTintColor: '#757575', // Inactive tab text color
-    showLabel: false, // Hide tab labels
+    activeTintColor: '#FFFFFF', 
+    inactiveTintColor: '#757575', 
+    showLabel: false, 
     style: {
-      backgroundColor: '#6200EE', // Tab bar background color
+      backgroundColor: '#6200EE',
     },
   };
 
   return (
     <Tab.Navigator
       initialRouteName="ListProfil"
-      shifting={true} // Enables shifting behavior for icons
-      barStyle={{ backgroundColor: '#6200EE' }} // Background color for the entire bottom tab navigator
-      activeColor="#FFFFFF" // Active tab text color
-      inactiveColor="#757575" // Inactive tab text color
+      shifting={true} 
+      barStyle={{ backgroundColor: '#6200EE' }} 
+      activeColor="#FFFFFF" 
+      inactiveColor="#757575"
     >
       <Tab.Screen
         name="ListProfil"
         component={ListProfil}
+        initialParams={currentid}
+
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="person" size={24} color={color} />
@@ -40,6 +42,7 @@ export default function Accueil(props) {
       <Tab.Screen
         name="Groupe"
         component={Groupe}
+        initialParams={currentid}
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="account-group" size={24} color={color} />
@@ -49,21 +52,14 @@ export default function Accueil(props) {
       <Tab.Screen
         name="MyAccount"
         component={MyAccount}
+        initialParams={currentid}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="user" size={24} color={color} />
           ),
         }}
       />
-      <Tab.Screen
-        name="chat"
-        component={chat}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons name="chat" size={24} color={color} />
-          ),
-        }}
-      />
+
     </Tab.Navigator>
   );
 }

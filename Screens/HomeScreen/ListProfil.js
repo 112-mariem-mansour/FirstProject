@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Card } from 'react-native-paper';
-import { useNavigation } from '@react-navigation/native'; // Import from React Navigation
+import { useNavigation } from '@react-navigation/native'; 
+import { Ionicons } from '@expo/vector-icons';  // Import Ionicons from Expo
+
 import firebase from '../../Config';
 
 const database = firebase.database();
 
 const AllProfiles = () => {
+  const currentid = firebase.auth().currentUser.uid;
   const [profiles, setProfiles] = useState([]);
-  const navigation = useNavigation(); // Access the navigation object
+  const navigation = useNavigation(); 
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -17,7 +20,6 @@ const AllProfiles = () => {
         const profilsData = profilsSnapshot.val();
 
         if (profilsData) {
-          // Convert the object of profiles into an array
           const profilesArray = Object.keys(profilsData).map((key) => ({
             id: key,
             ...profilsData[key],
@@ -33,7 +35,6 @@ const AllProfiles = () => {
   }, []);
 
   const handleProfilePress = (profile) => {
-    // Navigate to the chat screen and pass the selected profile
     navigation.navigate('chat', { profile });
   };
 
@@ -46,10 +47,13 @@ const AllProfiles = () => {
         renderItem={({ item }) => (
           <TouchableOpacity onPress={() => handleProfilePress(item)}>
             <Card style={styles.card}>
-              <Card.Content>
+              <Card.Content style={styles.cardContent}>
+                <Image source={{ uri: item.url }} style={styles.profileImage} />
                 <Text style={styles.cardTitle}>{item.nom} {item.prenom}</Text>
                 <Text>{item.tel}</Text>
-                <Image source={{ uri: item.url }} style={styles.profileImage} />
+                <TouchableOpacity onPress={() => handleProfilePress(item)}>
+                  <Ionicons name="chatbox" size={24} color="#6200EE" />
+                </TouchableOpacity>
               </Card.Content>
             </Card>
           </TouchableOpacity>
@@ -72,20 +76,23 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   card: {
-    width: 200, // Ajustez la largeur selon vos besoins
-    marginRight: 10, // Ajoutez un espace entre les cartes
+    width: 200, 
+    marginRight: 10,
     elevation: 4,
   },
   cardTitle: {
-    fontSize: 16, // Ajustez la taille de la police selon vos besoins
+    fontSize: 16,
     marginBottom: 5,
     fontWeight: 'bold',
   },
   profileImage: {
-    width: 150, // Ajustez la largeur de l'image selon vos besoins
-    height: 150, // Ajustez la hauteur de l'image selon vos besoins
-    borderRadius: 75,
+    width: 100,  
+    height: 100,  
+    borderRadius: 50,
     marginBottom: 10,
+  },
+  cardContent: {
+    alignItems: 'center', // Center content inside the card
   },
 });
 
